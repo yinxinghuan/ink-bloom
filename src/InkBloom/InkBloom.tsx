@@ -59,7 +59,8 @@ export default function InkBloom() {
     if (!canvasRef.current) return;
     const eng = createMarbling(canvasRef.current);
     engineRef.current = eng;
-    eng.setBase(PALETTES[0].base, PALETTES[0].vignette);
+    const p0 = PALETTES[0];
+    eng.setStyle({ base: p0.base, base2: p0.base2, fleck: p0.fleck, vein: p0.vein });
     eng.start();
     const onResize = () => eng.resize();
     window.addEventListener('resize', onResize);
@@ -72,7 +73,7 @@ export default function InkBloom() {
   }, []);
 
   useEffect(() => {
-    engineRef.current?.setBase(palette.base, palette.vignette);
+    engineRef.current?.setStyle({ base: palette.base, base2: palette.base2, fleck: palette.fleck, vein: palette.vein });
   }, [palette]);
 
   // ── attract demo (bounded, looping, stops on first touch) ──────────────────
