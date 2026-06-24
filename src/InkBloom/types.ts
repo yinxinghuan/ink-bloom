@@ -1,3 +1,5 @@
+import type { GuestMessage } from '@shared/social/guestbook';
+
 export interface Sheet {
   id: string;
   imageUrl: string;
@@ -16,6 +18,9 @@ export interface SealRecord {
 export interface InkSave {
   sheets: Sheet[];
   seals: SealRecord[];
+  /** Public guestbook notes this user left on sheets (theirs or others').
+   *  Lives in the single per-user blob — see @shared/social/guestbook. */
+  messages?: GuestMessage[];
 }
 
 /** A sheet resolved for the wall, with author identity + aggregated sealers. */

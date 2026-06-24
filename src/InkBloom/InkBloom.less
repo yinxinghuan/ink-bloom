@@ -355,12 +355,19 @@
 }
 
 /* ── detail ── */
-.ib-detail__stage {
+.ib-detail__scroll {
   flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.ib-detail__stage {
   display: grid;
   place-items: center;
   padding: 6px 24px;
-  min-height: 0;
+  min-height: 46vh;
 }
 .ib-detail__sheet {
   position: relative;
@@ -412,6 +419,124 @@
   flex-wrap: wrap;
   gap: 8px 14px;
   margin-top: 12px;
+}
+
+/* ── guestbook notes ── */
+.ib-notes {
+  padding: 18px 20px 6px;
+}
+.ib-notes__eyebrow {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  margin-bottom: 12px;
+}
+.ib-notes__empty {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 6px 0 10px;
+}
+.ib-notes__list {
+  list-style: none;
+  margin: 0 0 4px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ib-note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ib-note__chip {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ib-note__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ib-note__av {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+.ib-note__av--initial {
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 700;
+}
+.ib-note__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+.ib-note__name--self {
+  font-weight: 700;
+}
+.ib-note__time {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+.ib-note__text {
+  margin: 0 0 0 30px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
+  word-break: break-word;
+}
+
+.ib-compose {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ib-compose__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+.ib-compose__input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.ib-compose__send {
+  flex: 0 0 auto;
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #11131c;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ib-compose__send:disabled {
+  opacity: 0.45;
+  cursor: default;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .ib-detail__cta {

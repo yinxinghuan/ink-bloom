@@ -27,6 +27,12 @@ const DICT: Record<Lang, Record<string, string>> = {
     by: 'by',
     notify_seal: '{sender_name} sealed your marbling.',
     saved_hint: 'Hung on the line',
+    notes: 'notes',
+    no_notes: 'No notes yet — be the first.',
+    note_placeholder: 'Leave a note…',
+    note_send: 'Send',
+    note_signed_out: 'Open in AlterU to leave a note.',
+    note_someone: 'someone',
   },
   zh: {
     brand: 'INK · BLOOM',
@@ -48,6 +54,12 @@ const DICT: Record<Lang, Record<string, string>> = {
     by: '作者',
     notify_seal: '{sender_name} 在你的纹纸上盖了印。',
     saved_hint: '已晾上绳',
+    notes: '留言',
+    no_notes: '还没有留言 —— 来当第一个。',
+    note_placeholder: '写句留言…',
+    note_send: '发送',
+    note_signed_out: '在 AlterU 中打开即可留言。',
+    note_someone: '某人',
   },
 };
 

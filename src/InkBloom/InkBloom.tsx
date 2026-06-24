@@ -9,6 +9,13 @@ import { useWall } from './hooks/useWall';
 import { GhostFinger } from './assets/icons';
 import Wall from './components/Wall';
 import Detail from './components/Detail';
+import {
+  appendMessage,
+  guestbookNotifyConfig,
+  newMessage,
+  threadFor,
+  type GuestMessage,
+} from '@shared/social/guestbook';
 import type { InkSave, Sheet, SealRecord, WallSheet } from './types';
 import './InkBloom.less';
 
@@ -36,7 +43,9 @@ export default function InkBloom() {
   const { savedData, loaded, persist } = useGameSave<InkSave>('ink-bloom');
   const [mySheets, setMySheets] = useState<Sheet[]>([]);
   const [mySeals, setMySeals] = useState<SealRecord[]>([]);
+  const [myMessages, setMyMessages] = useState<GuestMessage[]>([]);
   const seeded = useRef(false);
+  const noteNotified = useRef<Set<string>>(new Set());
 
   const events = useGameEvent();
   const { upload } = useUpload();
@@ -51,6 +60,7 @@ export default function InkBloom() {
     if (savedData) {
       setMySheets(savedData.sheets || []);
       setMySeals(savedData.seals || []);
+      setMyMessages(savedData.messages || []);
     }
   }, [loaded, savedData]);
 
@@ -201,7 +211,7 @@ export default function InkBloom() {
       const sheet: Sheet = { id: uid(), imageUrl: url, paletteId: palette.id, createdAt: Date.now() };
       const next = [sheet, ...mySheets].slice(0, 20);
       setMySheets(next);
-      persist({ sheets: next, seals: mySeals });
+      persist({ sheets: next, seals: mySeals, messages: myMessages });
       wall.refresh();
       setScreen('wall');
     } finally {
@@ -222,7 +232,7 @@ export default function InkBloom() {
     const rec: SealRecord = { sheetId: ws.sheet.id, authorId: ws.authorId, style, at: Date.now() };
     const next = [rec, ...mySeals].slice(0, 200);
     setMySeals(next);
-    persist({ sheets: mySheets, seals: next });
+    persist({ sheets: mySheets, seals: next, messages: myMessages });
     playSeal();
     if (ws.authorId && ws.authorId !== selfId && ws.authorId !== 'self' && ws.sheet.imageUrl) {
       events.trigger(`seal:${ws.sheet.id}`, {
@@ -236,6 +246,38 @@ export default function InkBloom() {
         ],
       });
     }
+  }
+
+  // ── leave a public note on a sheet ─────────────────────────────────────────
+  // Store it in MY own blob (the wall guestbook aggregates everyone's) and ping
+  // the author once. Skip self / local-only 'self' targets. Persist ALL fields
+  // so a note never wipes sheets/seals.
+  function handleSendNote(ws: WallSheet, text: string) {
+    const msg = newMessage(ws.sheet.id, ws.authorId, text);
+    if (!msg) return;
+    const next = appendMessage({ messages: myMessages }, msg).messages || [];
+    setMyMessages(next);
+    persist({ sheets: mySheets, seals: mySeals, messages: next });
+
+    if (
+      ws.authorId &&
+      ws.authorId !== selfId &&
+      ws.authorId !== 'self' &&
+      !noteNotified.current.has(ws.sheet.id)
+    ) {
+      noteNotified.current.add(ws.sheet.id);
+      events.trigger(
+        `inkbloom_note:${ws.sheet.id}`,
+        guestbookNotifyConfig({
+          toUserId: ws.authorId,
+          refUrl: ws.sheet.imageUrl,
+          note: text,
+          template: '{sender_name} left a note on your sheet',
+          imagePrompt: 'a hand-marbled ink sheet, Ink Bloom',
+        }),
+      );
+    }
+    setTimeout(() => wall.refresh(), 1500);
   }
 
   // ── merged wall (optimistic own sheets + own seals) ────────────────────────
@@ -351,6 +393,8 @@ export default function InkBloom() {
           selfId={selfId}
           accent={palette.inks[0]}
           hasSealed={mySeals.some(s => s.sheetId === detailWs.sheet.id)}
+          thread={threadFor(detailWs.sheet.id, wall.messagesByTarget, myMessages, selfId)}
+          onSendNote={text => handleSendNote(detailWs, text)}
           onSeal={() => sealSheet(detailWs)}
           onBack={() => setScreen('wall')}
         />
