@@ -289,6 +289,7 @@
   margin-top: 8px;
 }
 .ib-card__count {
+  flex-shrink: 0; // long-username truncation
   font-size: 10px;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.5);
@@ -316,6 +317,7 @@
   align-items: center;
   gap: 6px;
   max-width: 100%;
+  min-width: 0; // long-username truncation
   padding: 0;
   border: none;
   background: none;
@@ -348,6 +350,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 .ib-chip__name {
+  min-width: 0; // long-username truncation
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -409,6 +412,7 @@
   gap: 8px;
 }
 .ib-detail__bylabel {
+  flex-shrink: 0; // long-username truncation
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -464,6 +468,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0; // long-username truncation
 }
 .ib-note__av {
   width: 22px;
@@ -481,6 +486,10 @@
   font-weight: 700;
 }
 .ib-note__name {
+  min-width: 0; // long-username truncation
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 13px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
@@ -489,6 +498,7 @@
   font-weight: 700;
 }
 .ib-note__time {
+  flex-shrink: 0; // long-username truncation
   font-size: 11px;
   color: rgba(255, 255, 255, 0.35);
 }
