@@ -6,6 +6,8 @@ import { WaxSeal } from '../assets/icons';
 import { openAigramProfile, isInAigram } from '@shared/runtime';
 import { timeAgo, type GuestMessage } from '@shared/social/guestbook';
 
+const ALTERU_APP_URL = 'https://apps.apple.com/app/id6769646546';
+
 interface Props {
   ws: WallSheet;
   selfId: string;
@@ -113,7 +115,12 @@ export default function Detail({ ws, selfId, accent, hasSealed, thread, onSendNo
           {isInAigram ? (
             <Compose onSend={onSendNote} accent={accent} />
           ) : (
-            <div className="ib-notes__empty">{t('note_signed_out')}</div>
+            <div className="ib-notes__empty ib-notes__download">
+              <span>{t('note_signed_out')}</span>
+              <a href={ALTERU_APP_URL} target="_blank" rel="noopener noreferrer">
+                {t('download_alteru')}
+              </a>
+            </div>
           )}
         </div>
       </div>

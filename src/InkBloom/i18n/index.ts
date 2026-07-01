@@ -32,6 +32,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     note_placeholder: 'Leave a note…',
     note_send: 'Send',
     note_signed_out: 'Open in AlterU to leave a note.',
+    download_alteru: 'Get AlterU on the App Store',
     note_someone: 'someone',
   },
   zh: {
@@ -59,6 +60,7 @@ const DICT: Record<Lang, Record<string, string>> = {
     note_placeholder: '写句留言…',
     note_send: '发送',
     note_signed_out: '在 AlterU 中打开即可留言。',
+    download_alteru: '下载 AlterU',
     note_someone: '某人',
   },
 };
